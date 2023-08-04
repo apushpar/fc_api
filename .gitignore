@@ -1,0 +1,6 @@
+app/ai-pipeline-app-firebase-adminsdk-qfhxx-1d7a71aade.json
+.env
+.DS_Store
+__pycache__
+.pytest_cache
+inswapper_128.onnx
