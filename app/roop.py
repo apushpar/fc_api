@@ -44,7 +44,7 @@ def _get_model_path():
 
 def app_launch_roop_setup():
     model_path = _get_model_path()
-    # download(MODEL_URL, model_path)
+    download(MODEL_URL, model_path)
 
 def convert_to_sd(img):
     shapes = []

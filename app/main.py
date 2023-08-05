@@ -11,9 +11,10 @@ from firebase_admin import credentials, firestore_async, auth, firestore
 
 from fastapi import Body, FastAPI, Depends, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
-import os
+import os, os.path
 import secrets
 import io
+from contextlib import asynccontextmanager
 
 # load_dotenv()
 # cred = credentials.Certificate(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
@@ -23,11 +24,17 @@ import io
 
 firebase_admin.initialize_app()
 
-app_launch_roop_setup()
-model_path = _get_model_path()
-getFaceSwapModel(model_path)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    model_path = _get_model_path()
+    if not os.path.isfile(model_path):
+        print('model not in path')
+        app_launch_roop_setup()
+    getFaceSwapModel(model_path)
+    yield
+    # Clean up the ML models and release the resources
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 origins = [
     "*"
